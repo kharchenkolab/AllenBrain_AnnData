@@ -6,4 +6,4 @@ The script was created accordingly with https://portal.brain-map.org/atlases-and
 ```python converter.py -p/data/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -o/obs.csv.gz -c/exon.counts.csv.gz -a/cluster.annotation.csv -m/cluster.membership.csv```
 
 ## Notes:
-Availability of files can vary from project to project 
+Availability of files (observations, counts and etc.) withing a certain project can vary from project to project 
