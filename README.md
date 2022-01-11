@@ -6,4 +6,4 @@ We worked with https://portal.brain-map.org/atlases-and-data/rnaseq and some nem
 ```python converter.py -p/data/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -o/obs.csv.gz -c/exon.counts.csv.gz -a/cluster.annotation.csv -m/cluster.membership.csv```
 
 ## Notes:
-existence of folders files can change from project to project 
+Availability of files can vary from project to project 
