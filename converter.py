@@ -45,7 +45,7 @@ try:
   except:
       print('type in right joining column between observations and memberships')
 except:
-  print('no memberships file')
+  print('There is no memberships file mentioned')
 
 # cluster annotations table
 try:
@@ -57,7 +57,7 @@ try:
   except:
       print('type in right column name as index')
 except:
-  print('There is no annotations file')
+  print('There is no annotations file mentioned')
   
 
 # merge obs with annot
@@ -81,7 +81,7 @@ try:
   except:
       print('Check if a right column name was set as index')
 except:
-  print('there is no annotation file')
+  print('there is no counts file mentioned')
 
 # create anndata file
 try:
