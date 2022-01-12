@@ -55,7 +55,7 @@ try:
       annot = pd.read_csv(path + args.annotationsFile)
       annot.rename(columns={'cluster_id': 'x'}, inplace=True)
   except:
-      print('type in right column name as index')
+      print('type in right column name as index in annotations')
 except:
   print('There is no annotations file mentioned')
   
@@ -79,7 +79,7 @@ try:
       print('read ', path + args.countsFile)
       counts = pd.read_csv(path + args.countsFile, index_col=0).T
   except:
-      print('Check if a right column name was set as index')
+      print('Check if a right column name was set as index in counts file')
 except:
   print('there is no counts file mentioned')
 
