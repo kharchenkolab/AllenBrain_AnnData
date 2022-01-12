@@ -37,34 +37,51 @@ except:
 
 # clusters memberships table
 try:
-    print('read ', path + args.membershipsFile)
-    memb = pd.read_csv(path + args.membershipsFile)
-    obs = obs.merge(memb, on='Unnamed: 0', how='left')
+  print(args.membershipsFile)
+  try:
+      print('read ', path + args.membershipsFile)
+      memb = pd.read_csv(path + args.membershipsFile)
+      obs = obs.merge(memb, on='Unnamed: 0', how='left')
+  except:
+      print('type in right joining column between observations and memberships')
 except:
-    print('There is no memberships file or type in right joining column between observations and memberships')
+  print('no memberships file')
 
 # cluster annotations table
 try:
-    print('read ', path + args.annotationsFile)
-    annot = pd.read_csv(path + args.annotationsFile)
-    annot.rename(columns={'cluster_id': 'x'}, inplace=True)
+  print(args.annotationsFile)
+  try:
+      print('read ', path + args.annotationsFile)
+      annot = pd.read_csv(path + args.annotationsFile)
+      annot.rename(columns={'cluster_id': 'x'}, inplace=True)
+  except:
+      print('type in right column name as index')
 except:
-    print('There is no annotations file or type in right column name as index')
+  print('There is no annotations file')
+  
 
 # merge obs with annot
 try:
-    obs = obs.merge(annot, on='x', how='left')
-    obs.rename(columns={'Unnamed: 0' :'cluster_id'}, inplace=True)
-    obs.set_index('cluster_id', inplace=True)
+  print(annot)
+  try:
+      obs = obs.merge(annot, on='x', how='left')
+      obs.rename(columns={'Unnamed: 0' :'cluster_id'}, inplace=True)
+      obs.set_index('cluster_id', inplace=True)
+  except:
+      print('Rename joining column between observations and annotations to a common notation')
 except:
-    print('There is no annotations file or rename joining column between observations and annotations to a common notation')
+  print('there is no annot variable')
 
 # counts matrix
 try:
-    print('read ', path + args.countsFile)
-    counts = pd.read_csv(path + args.countsFile, index_col=0).T
+  print(args.countsFile)
+  try:
+      print('read ', path + args.countsFile)
+      counts = pd.read_csv(path + args.countsFile, index_col=0).T
+  except:
+      print('Check if a right column name was set as index')
 except:
-    print('Check if counts file exits or if a right column name was set as index')
+  print('there is no annotation file')
 
 # create anndata file
 try:
