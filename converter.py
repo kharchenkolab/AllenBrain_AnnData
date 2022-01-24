@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import anndata
 import argparse
 import numpy as np
@@ -5,90 +7,86 @@ import os
 import pandas as pd
 
 parser = argparse.ArgumentParser()
-
 parser.add_argument("-p", "--projectPath", action='store', dest='projectPath',
-                    help="type in the path of the targeted project folder", required=True)
+                    help="Path to the targeted project folder", required=True)
 
 parser.add_argument("-o", "--observationsFile", action='store', dest='observationsFile',
-                    help="type in observations file name", required=True)
+                    help="Path to the observations file", required=True)
 
 parser.add_argument("-c", "--countsFile", action='store', dest='countsFile',
-                    help="type in counts file name'")
+                    help="Path to the counts file'")
 
 parser.add_argument("-a", "--annotationsFile", action='store', dest='annotationsFile',
-                    help="type in annotations file name")
+                    help="Path to the annotations file")
 
 parser.add_argument("-m", "--membershipsFile", action='store', dest='membershipsFile',
-                    help="type in memberships file name'")
+                    help="Path to the memberships file")
 
 parser.add_argument("-t", "--tsneFile", action='store', dest='tsneFile',
-                    help="type in tsne file name'")
+                    help="Path to the tSNE file'")
 
 args = parser.parse_args()
 
 path = args.projectPath.lstrip('/')
+
 
 # cells observations metadata
 try:
     obs = pd.read_csv(path + args.observationsFile, index_col='sample_name')
     print('read ', path + args.observationsFile)
 except:
-    print('Check observations file or type in right index name')
+    print('Check "observationsFile" or type in right index name')
 
 # clusters memberships table
-try:
-  print(args.membershipsFile)
+if args.membershipsFile is not None:
   try:
       print('read ', path + args.membershipsFile)
       memb = pd.read_csv(path + args.membershipsFile)
       obs = obs.merge(memb, on='Unnamed: 0', how='left')
   except:
       print('type in right joining column between observations and memberships')
-except:
-  print('There is no memberships file mentioned')
+else:
+  print('Note: There is no memberships file specified with "membershipsFile"')
 
 # cluster annotations table
-try:
-  print(args.annotationsFile)
+if args.annotationsFile is not None:
   try:
       print('read ', path + args.annotationsFile)
       annot = pd.read_csv(path + args.annotationsFile)
       annot.rename(columns={'cluster_id': 'x'}, inplace=True)
   except:
       print('type in right column name as index in annotations')
-except:
-  print('There is no annotations file mentioned')
+else:
+  print('Note: There is no annotationss file specified with "annotationsFile"')
   
 
 # merge obs with annot
+## note: annot variable must exist
 try:
-  print(annot)
-  try:
-      obs = obs.merge(annot, on='x', how='left')
-      obs.rename(columns={'Unnamed: 0' :'cluster_id'}, inplace=True)
-      obs.set_index('cluster_id', inplace=True)
-  except:
-      print('Rename joining column between observations and annotations to a common notation')
+    obs = obs.merge(annot, on='x', how='left')
+    obs.rename(columns={'Unnamed: 0' :'cluster_id'}, inplace=True)
+    obs.set_index('cluster_id', inplace=True)
 except:
-  print('there is no annot variable')
+    print('Rename joining column between observations and annotations to a common notation')
+
 
 # counts matrix
-try:
-  print(args.countsFile)
+if args.countsFile is not None:
   try:
       print('read ', path + args.countsFile)
       counts = pd.read_csv(path + args.countsFile, index_col=0).T
   except:
       print('Check if a right column name was set as index in counts file')
-except:
-  print('there is no counts file mentioned')
+else:
+  counts = None
+  print('Note: There is no counts file specified with "countsFile"')
 
 # create anndata file
-try:
+if counts is not None:
     adata = anndata.AnnData(counts, obs)
-except:
+else:
     adata = anndata.AnnData(obs)
 
 print('Creating anndata file ...')
 adata.write(path + '/Input.h5ad')
-print('Created  anndata file')
+print('Successfully created anndata file. Done.')
