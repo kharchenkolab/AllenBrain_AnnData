@@ -1,6 +1,6 @@
 ## This is a basic script to convert certain .csv Allen Brain Atlas projects into .h5ad AnnData format
 
-## Dependencies
+## Dependencies installation
 Run the following from the root folder
 ```
 pip install -r requirements.txt
@@ -35,9 +35,10 @@ optional arguments:
 
 ### Steps to generate .h5ad file
 1. Clone the repository
-2. Create a project folder in the data folder
-3. Download necessary files in the project folder
-4. Run the script "converter.py" with the files full names as arguments from the root folder. 
+2. Create a folder called "data" in your root repository folder
+3. Create a project folder of interest in the data folder
+4. Download necessary files in the project folder
+5. From the root repository folder run the script "converter.py" with the files full names as arguments
 
 For a project example [Human Multiple Cortical Areas SMART-seq](https://portal.brain-map.org/atlases-and-data/rnaseq/human-multiple-cortical-areas-smart-seq) we used the following command:
 ```

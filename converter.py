@@ -47,9 +47,10 @@ if 'external_donor_name_label' in metadata.columns:
 
 # cells observations metadata
 if args.exonCountsFile is not None or args.intronCountsFile is not None:
-    metadata.rename(columns={'sample_name': 'id'}, inplace=True)
-    metadata.rename(columns={'Unnamed: 0': 'sample_name'}, inplace=True)
-# if args.counts is not None:
+    if 'sample_name' in metadata.columns:
+        metadata.rename(columns={'sample_name': 'id'}, inplace=True)
+        if 'Unnamed: 0' in metadata.columns:
+            metadata.rename(columns={'Unnamed: 0': 'sample_name'}, inplace=True)
 
 print(metadata.columns)
 
@@ -81,7 +82,8 @@ if args.tsneFile is not None:
 if args.trimmedMeansFile is not None:
     features = pd.read_csv(path + args.trimmedMeansFile)
 
-metadata.set_index('sample_name', inplace=True)
+if 'sample_name' in metadata.columns:
+    metadata.set_index('sample_name', inplace=True)
 metadata.dropna(axis=1, inplace=True)
 
 # exon counts matrix
@@ -94,7 +96,12 @@ if args.exonCountsFile is not None:
         adata = ad.AnnData(X=exonCounts, obs=metadata)
     if 'tsne' in globals():
         adata.obsm['X_tsne'] = np.array(tsne)
-    adata.write(path + '/exonInput.h5ad')
+    output_name = path + '/exonInput.h5ad'
+    print(f"Generating {output_name} ...")
+    if os.path.exists(output_name):
+        os.remove(output_name)
+    adata.write(filename=output_name, compression="gzip")
+    print(f"Completed generating {output_name}!")
 
 # intron counts matrix
 if args.intronCountsFile is not None:
@@ -106,7 +113,12 @@ if args.intronCountsFile is not None:
         adata = ad.AnnData(X=intronCounts, obs=metadata)
     if 'tsne' in globals():
         adata.obsm['X_tsne'] = np.array(tsne)
-    adata.write(path + '/intronInput.h5ad')
+    output_name = path + '/intronInput.h5ad'
+    print(f"Generating {output_name} ...")
+    if os.path.exists(output_name):
+        os.remove(output_name)
+    adata.write(filename=output_name, compression="gzip")
+    print(f"Completed generating {output_name}!")
 
 # common counts matrix
 if args.countsFile is not None:
@@ -118,7 +130,12 @@ if args.countsFile is not None:
         adata = ad.AnnData(X=counts, obs=metadata)
     if 'tsne' in globals():
         adata.obsm['X_tsne'] = np.array(tsne)
-    adata.write(path + '/Input.h5ad')
+    output_name = path + '/Input.h5ad'
+    print(f"Generating {output_name} ...")
+    if os.path.exists(output_name):
+        os.remove(output_name)
+    adata.write(filename=output_name, compression="gzip")
+    print(f"Completed generating {output_name}!")
 
 
 
