@@ -8,10 +8,9 @@ Run the following from the root folder
 pip install -r requirements.txt
 ```
 ## Usage
-
+  -h, --help            show this help message and exit
 ```
 required arguments:
-  -h, --help            show this help message and exit
   -p PROJECTFOLDER, --projectFolder PROJECTFOLDER
                         Path to the targeted project folder
   -m METADATAFILE, --metadataFile METADATAFILE
