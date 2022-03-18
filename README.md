@@ -13,7 +13,7 @@ pip install -r requirements.txt
 required arguments:
   -p PROJECTFOLDER, --projectFolder PROJECTFOLDER
                         Path to the targeted project folder
-  -m METADATAFILE, --metadataFile METADATAFILE
+  -o METADATAFILE, --metadataFile METADATAFILE
                         Path to the observations file
 optional arguments:                   
   -c COUNTSFILE, --countsFile COUNTSFILE
@@ -24,7 +24,7 @@ optional arguments:
                         Path to the intron counts file'                        
   -a CLUSTERFILE, --clusterFile CLUSTERFILE
                         Path to the cluster annotations file
-  -e MEMBERSHIPSFILE, --membershipsFile MEMBERSHIPSFILE
+  -m MEMBERSHIPSFILE, --membershipsFile MEMBERSHIPSFILE
                         Path to the memberships file
   -t TSNEFILE, --tsneFile TSNEFILE
                         Path to the tSNE file'
@@ -39,7 +39,7 @@ optional arguments:
 4. Run the script "converter.py" with the files full names as arguments from the root folder. Example below:
 
 ```
-python3 converter.py -p/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -m/metadata.csv.gz -e/exon.counts.csv.gz -i/intron.counts.csv.gz -a/cluster.annotation.csv -e/cluster.membership.csv -t/tsne.csv -f/trimmed_means.csv
+python3 converter.py -p/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -o/metadata.csv.gz -e/exon.counts.csv.gz -i/intron.counts.csv.gz -a/cluster.annotation.csv -m/cluster.membership.csv -t/tsne.csv -f/trimmed_means.csv
 ```
 
 # IMPORTANT NOTES:
