@@ -36,10 +36,16 @@ optional arguments:
 1. Clone the repository
 2. Create a project folder in the data folder
 3. Download necessary files in the project folder
-4. Run the script "converter.py" with the files full names as arguments from the root folder. Example below:
+4. Run the script "converter.py" with the files full names as arguments from the root folder. 
 
+For a project example [Human Multiple Cortical Areas SMART-seq](https://portal.brain-map.org/atlases-and-data/rnaseq/human-multiple-cortical-areas-smart-seq) we used the following command:
 ```
-python3 converter.py -p/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -o/metadata.csv.gz -e/exon.counts.csv.gz -i/intron.counts.csv.gz -a/cluster.annotation.csv -m/cluster.membership.csv -t/tsne.csv -f/trimmed_means.csv
+python3 converter.py -p/AllenBrain_humanMultipleCorticalAreas_09Nov2021 -o/metadata.csv -c/counts.csv -t/tsne.csv -f/trimmed_means.csv
+```
+
+For a project example [Transcriptomic cell types in the mouse brain: SMART-seq cells](http://data.nemoarchive.org/biccn/grant/u19_zeng/zeng/transcriptome/scell/SSv4/mouse/processed/analysis/SMARTer_cells_MOp/) we used the following command:
+```
+python3 converter.py -p/AllenBrain_humanMultipleCorticalAreas_09Nov2021 -o/metadata.csv.gz -e/exon.counts.csv.gz -i/intron.counts.csv.gz -a/cluster.annotation.csv -m/cluster.membership.csv -t/tsne.csv -f/trimmed_means.csv
 ```
 
 # IMPORTANT NOTES:
