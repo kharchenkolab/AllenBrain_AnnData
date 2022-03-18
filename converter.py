@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--projectFolder", action='store', dest='projectFolder',
                     help="enter AllenBrain project name", required=True)
 
-parser.add_argument("-m", "--metadataFile", action='store', dest='metadataFile',
+parser.add_argument("-o", "--metadataFile", action='store', dest='metadataFile',
                     help="Enter metadata file name", required=True)
 
 parser.add_argument("-c", "--countsFile", action='store', dest='countsFile',
@@ -28,7 +28,7 @@ parser.add_argument("-i", "--intronCountsFile", action='store', dest='intronCoun
 parser.add_argument("-a", "--clusterFile", action='store', dest='clusterFile',
                     help="Cluster annotations file")
 
-parser.add_argument("-e", "--membershipsFile", action='store', dest='membershipsFile',
+parser.add_argument("-m", "--membershipsFile", action='store', dest='membershipsFile',
                     help="Memberships file")
 
 parser.add_argument("-t", "--tsneFile", action='store', dest='tsneFile',
@@ -45,15 +45,19 @@ metadata = pd.read_csv(path + args.metadataFile)
 if 'external_donor_name_label' in metadata.columns:
     metadata['external_donor_name_label'] = metadata['external_donor_name_label'].astype(str)
 
-# cells metadata
-metadata.rename(columns={'sample_name': 'id'}, inplace=True)
-metadata.rename(columns={'Unnamed: 0': 'sample_name'}, inplace=True)
+# cells observations metadata
+if args.exonCountsFile is not None or args.intronCountsFile is not None:
+    metadata.rename(columns={'sample_name': 'id'}, inplace=True)
+    metadata.rename(columns={'Unnamed: 0': 'sample_name'}, inplace=True)
+# if args.counts is not None:
 
-# cluster membership table
+print(metadata.columns)
+
+# cluster memberships table
 if args.membershipsFile is not None:
     memb = pd.read_csv(path + args.membershipsFile)
     memb.rename(columns={'Unnamed: 0': 'sample_name'}, inplace=True)
-    # merge metadata with cluster membership
+    # merge metadata with cluster memberships
     metadata = metadata.merge(memb, on='sample_name', how='left')
 
 # cluster annotations table
@@ -66,7 +70,9 @@ if args.clusterFile is not None:
 # tSNE
 if args.tsneFile is not None:
     tsne = pd.read_csv(path + args.tsneFile)
-    tsne.rename(columns={'Unnamed: 0': 'sample_name'}, inplace=True)
+    if 'Unnamed: 0' in tsne.columns:
+        tsne.rename(columns={'Unnamed: 0': 'sample_name'}, inplace=True)
+    print(tsne.columns)
     metadata = tsne.merge(metadata, on='sample_name', how='left')
     # merge metadata with tsne
     tsne.set_index('sample_name', inplace=True)
