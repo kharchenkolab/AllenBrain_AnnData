@@ -8,8 +8,10 @@ Run the following from the root folder
 pip install -r requirements.txt
 ```
 ## Usage
-  -h, --help            show this help message and exit
+
 ```
+usage: python3 converter.py [-h] -p/PROJECTFOLDER -o/METADATAFILE -c/COUNTSFILE -a/CLUSTERFILE -m/MEMBERSHIPSFILE -t/TSNEFILE
+  -h, --help            show this help message and exit
 required arguments:
   -p PROJECTFOLDER, --projectFolder PROJECTFOLDER
                         Path to the targeted project folder
