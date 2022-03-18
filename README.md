@@ -1,6 +1,4 @@
-## This is a basic script to convert .csv Allen Brain Atlas datasets into .h5ad AnnData format
-
-The script was created following the [Cell Types Database: RNA-Seq Data](https://portal.brain-map.org/atlases-and-data/rnaseq) and using [this](https://knowledge.brain-map.org/data/CCDLINBDBP7KYYBOXOJ/summary) example from the Allen Brain Map data portal ([NeMO archive here](http://data.nemoarchive.org/biccn/grant/u19_zeng/zeng/transcriptome/scell/SSv4/mouse/processed/analysis/SMARTer_cells_MOp/))
+## This is a basic script to convert certain .csv Allen Brain Atlas projects into .h5ad AnnData format
 
 ## Dependencies
 Run the following from the root folder
