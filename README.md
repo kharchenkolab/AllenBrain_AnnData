@@ -7,25 +7,34 @@ The script was created following the [Cell Types Database: RNA-Seq Data](https:/
 ## Usage
 
 ```
-usage: converter.py [-h] -p PROJECTPATH -o OBSERVATIONSFILE [-c COUNTSFILE] [-a ANNOTATIONSFILE] [-m MEMBERSHIPSFILE] [-t TSNEFILE]
-
-optional arguments:
+required arguments:
   -h, --help            show this help message and exit
-  -p PROJECTPATH, --projectPath PROJECTPATH
+  -p PROJECTFOLDER, --projectFolder PROJECTFOLDER
                         Path to the targeted project folder
-  -o OBSERVATIONSFILE, --observationsFile OBSERVATIONSFILE
+  -m METADATAFILE, --metadataFile METADATAFILE
                         Path to the observations file
+optional arguments:                   
   -c COUNTSFILE, --countsFile COUNTSFILE
                         Path to the counts file'
-  -a ANNOTATIONSFILE, --annotationsFile ANNOTATIONSFILE
-                        Path to the annotations file
-  -m MEMBERSHIPSFILE, --membershipsFile MEMBERSHIPSFILE
+  -e EXONCOUNTSFILE, --exonCountsFile exonCountsFile
+                        Path to the exon counts file'
+  -i INTRONCOUNTSFILE, --intronCountsFile intronCountsFile
+                        Path to the intron counts file'                        
+  -a CLUSTERFILE, --clusterFile CLUSTERFILE
+                        Path to the cluster annotations file
+  -e MEMBERSHIPSFILE, --membershipsFile MEMBERSHIPSFILE
                         Path to the memberships file
   -t TSNEFILE, --tsneFile TSNEFILE
                         Path to the tSNE file'
+  -f TRIMMEDMEANSFILE, --trimmedMeansFile TRIMMEDMEANSFILE
+                        Path to the tSNE file'                        
 ```
 
-### Sample command
+### Steps to generate .h5ad file
+1. Clone the repository
+2. Create a project folder in the data folder
+3. Download necessary files in the project folder
+4. Run the script "converter.py" with the files full names as arguments. Example below:
 
 ```
 python3 converter.py -p /data/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -o /obs.csv.gz -c /exon.counts.csv.gz -a /cluster.annotation.csv -m /cluster.membership.csv
