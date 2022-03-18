@@ -42,5 +42,5 @@ optional arguments:
 python3 converter.py -p /data/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -o /obs.csv.gz -c /exon.counts.csv.gz -a /cluster.annotation.csv -m /cluster.membership.csv
 ```
 
-## NOTES:
+# IMPORTANT NOTES:
 Availability of files (observations, counts and etc.) within a certain project can vary from project to project. Having metadata and counts matrix (whether common or exon or intron count matrices) included is mandatory to generate .h5ad file
