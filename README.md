@@ -3,7 +3,10 @@
 The script was created following the [Cell Types Database: RNA-Seq Data](https://portal.brain-map.org/atlases-and-data/rnaseq) and using [this](https://knowledge.brain-map.org/data/CCDLINBDBP7KYYBOXOJ/summary) example from the Allen Brain Map data portal ([NeMO archive here](http://data.nemoarchive.org/biccn/grant/u19_zeng/zeng/transcriptome/scell/SSv4/mouse/processed/analysis/SMARTer_cells_MOp/))
 
 ## Dependencies
-
+Run the following from the root folder
+```
+pip install -r requirements.txt
+```
 ## Usage
 
 ```
@@ -34,7 +37,7 @@ optional arguments:
 1. Clone the repository
 2. Create a project folder in the data folder
 3. Download necessary files in the project folder
-4. Run the script "converter.py" with the files full names as arguments. Example below:
+4. Run the script "converter.py" with the files full names as arguments from the root folder. Example below:
 
 ```
 python3 converter.py -p /data/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -o /obs.csv.gz -c /exon.counts.csv.gz -a /cluster.annotation.csv -m /cluster.membership.csv
