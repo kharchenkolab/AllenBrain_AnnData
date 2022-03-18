@@ -41,7 +41,7 @@ optional arguments:
 
 For a project example [Human Multiple Cortical Areas SMART-seq](https://portal.brain-map.org/atlases-and-data/rnaseq/human-multiple-cortical-areas-smart-seq) we used the following command:
 ```
-python3 converter.py -p/AllenBrain_humanMultipleCorticalAreas_09Nov2021 -o/metadata.csv -c/counts.csv -t/tsne.csv -f/trimmed_means.csv
+python3 converter.py -p/AllenBrain_humanMultipleCorticalAreas_09Nov2021 -o/metadata.csv -c/matrix.csv -t/tsne.csv -f/trimmed_means.csv
 ```
 
 For a project example [Transcriptomic cell types in the mouse brain: SMART-seq cells](http://data.nemoarchive.org/biccn/grant/u19_zeng/zeng/transcriptome/sncell/SSv4/mouse/processed/analysis/SMARTer_nuclei_MOp/) we used the following command:
