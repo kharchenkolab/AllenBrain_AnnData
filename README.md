@@ -39,8 +39,8 @@ optional arguments:
 4. Run the script "converter.py" with the files full names as arguments from the root folder. Example below:
 
 ```
-python3 converter.py -p /data/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -o /obs.csv.gz -c /exon.counts.csv.gz -a /cluster.annotation.csv -m /cluster.membership.csv
+python3 converter.py -p/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -m/metadata.csv.gz -e/exon.counts.csv.gz -i/intron.counts.csv.gz -a/cluster.annotation.csv -e/cluster.membership.csv -t/tsne.csv -f/trimmed_means.csv
 ```
 
 # IMPORTANT NOTES:
-Availability of files (observations, counts and etc.) within a certain project can vary from project to project. Having metadata and counts matrix (whether common or exon or intron count matrices) included is mandatory to generate .h5ad file
+Availability and format of files (metadata, counts matrices and etc.) within a certain project can vary from project to project dramatically. The particular script given here is applicable to files of .csv formats, with examples presented above. Having metadata and counts matrix (whether common or exon or intron count matrices) included is mandatory to generate .h5ad file
