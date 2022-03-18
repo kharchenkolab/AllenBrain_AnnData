@@ -1,4 +1,5 @@
 # #!/usr/bin/env python3
+# ## Author: Sultan Arapov, sultan@ebookapplications.com
 # ## Date: March 18, 2022
 # ## Version: 0.1.3
 
