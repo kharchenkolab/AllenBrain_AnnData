@@ -27,7 +27,7 @@ optional arguments:
   -t TSNEFILE, --tsneFile TSNEFILE
                         Path to the tSNE file'
   -f TRIMMEDMEANSFILE, --trimmedMeansFile TRIMMEDMEANSFILE
-                        Path to the tSNE file'                        
+                        Path to the trimmed means file'                        
 ```
 
 ### Steps to generate .h5ad file
