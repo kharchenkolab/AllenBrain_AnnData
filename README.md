@@ -46,9 +46,9 @@ For a project example [Human Multiple Cortical Areas SMART-seq](https://portal.b
 python3 converter.py -p/AllenBrain_humanMultipleCorticalAreas_09Nov2021 -o/metadata.csv -c/counts.csv -t/tsne.csv -f/trimmed_means.csv
 ```
 
-For a project example [Transcriptomic cell types in the mouse brain: SMART-seq cells](http://data.nemoarchive.org/biccn/grant/u19_zeng/zeng/transcriptome/scell/SSv4/mouse/processed/analysis/SMARTer_cells_MOp/) we used the following command:
+For a project example [Transcriptomic cell types in the mouse brain: SMART-seq cells](http://data.nemoarchive.org/biccn/grant/u19_zeng/zeng/transcriptome/sncell/SSv4/mouse/processed/analysis/SMARTer_nuclei_MOp/) we used the following command:
 ```
-python3 converter.py -p/AllenBrain_mouseBrainTranscriptomicCellsSmartSeq_25Nov2021 -o/metadata.csv.gz -e/exon.counts.csv.gz -i/intron.counts.csv.gz -a/cluster.annotation.csv -m/cluster.membership.csv -f/trimmed_means.csv
+python3 converter.py -p/AllenBrain_mouseBrainTranscriptomicCellsSmartSeqNuclei_25Nov2021 -o/metadata.csv.gz -e/exon.counts.csv.gz -i/intron.counts.csv.gz -a/cluster.annotation.csv -m/cluster.membership.csv -t/tsne.df.csv -f/trimmed_means.csv
 ```
 
 # IMPORTANT NOTES:
