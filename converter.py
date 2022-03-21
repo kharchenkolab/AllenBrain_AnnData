@@ -1,92 +1,142 @@
-#!/usr/bin/env python3
+# #!/usr/bin/env python3
+# ## Author: Sultan Arapov, sultan@ebookapplications.com
+# ## Date: March 18, 2022
+# ## Version: 0.1.3
 
-import anndata
+import anndata as ad
 import argparse
 import numpy as np
 import os
 import pandas as pd
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-p", "--projectPath", action='store', dest='projectPath',
-                    help="Path to the targeted project folder", required=True)
 
-parser.add_argument("-o", "--observationsFile", action='store', dest='observationsFile',
-                    help="Path to the observations file", required=True)
+parser.add_argument("-p", "--projectFolder", action='store', dest='projectFolder',
+                    help="enter AllenBrain project name", required=True)
+
+parser.add_argument("-o", "--metadataFile", action='store', dest='metadataFile',
+                    help="Enter metadata file name", required=True)
 
 parser.add_argument("-c", "--countsFile", action='store', dest='countsFile',
-                    help="Path to the counts file'")
+                    help="Counts file")
 
-parser.add_argument("-a", "--annotationsFile", action='store', dest='annotationsFile',
-                    help="Path to the annotations file")
+parser.add_argument("-e", "--exonCountsFile", action='store', dest='exonCountsFile',
+                    help="Exon counts file")
+
+parser.add_argument("-i", "--intronCountsFile", action='store', dest='intronCountsFile',
+                    help="Intron counts file")
+
+parser.add_argument("-a", "--clusterFile", action='store', dest='clusterFile',
+                    help="Cluster annotations file")
 
 parser.add_argument("-m", "--membershipsFile", action='store', dest='membershipsFile',
-                    help="Path to the memberships file")
+                    help="Memberships file")
 
 parser.add_argument("-t", "--tsneFile", action='store', dest='tsneFile',
-                    help="Path to the tSNE file'")
+                    help="tSNE file")
+
+parser.add_argument("-f", "--trimmedMeansFile", action='store', dest='trimmedMeansFile',
+                    help="Trimmed means file")
 
 args = parser.parse_args()
+path = 'data' + args.projectFolder
 
-path = args.projectPath.lstrip('/')
+metadata = pd.read_csv(path + args.metadataFile)
 
+if 'external_donor_name_label' in metadata.columns:
+    metadata['external_donor_name_label'] = metadata['external_donor_name_label'].astype(str)
 
 # cells observations metadata
-try:
-    obs = pd.read_csv(path + args.observationsFile, index_col='sample_name')
-    print('read ', path + args.observationsFile)
-except:
-    print('Check "observationsFile" or type in right index name')
+if args.exonCountsFile is not None or args.intronCountsFile is not None:
+    if 'sample_name' in metadata.columns:
+        metadata.rename(columns={'sample_name': 'id'}, inplace=True)
+        if 'Unnamed: 0' in metadata.columns:
+            metadata.rename(columns={'Unnamed: 0': 'sample_name'}, inplace=True)
 
-# clusters memberships table
+print(metadata.columns)
+
+# cluster memberships table
 if args.membershipsFile is not None:
-  try:
-      print('read ', path + args.membershipsFile)
-      memb = pd.read_csv(path + args.membershipsFile)
-      obs = obs.merge(memb, on='Unnamed: 0', how='left')
-  except:
-      print('type in right joining column between observations and memberships')
-else:
-  print('Note: There is no memberships file specified with "membershipsFile"')
+    memb = pd.read_csv(path + args.membershipsFile)
+    memb.rename(columns={'Unnamed: 0': 'sample_name'}, inplace=True)
+    # merge metadata with cluster memberships
+    metadata = metadata.merge(memb, on='sample_name', how='left')
 
 # cluster annotations table
-if args.annotationsFile is not None:
-  try:
-      print('read ', path + args.annotationsFile)
-      annot = pd.read_csv(path + args.annotationsFile)
-      annot.rename(columns={'cluster_id': 'x'}, inplace=True)
-  except:
-      print('type in right column name as index in annotations')
-else:
-  print('Note: There is no annotationss file specified with "annotationsFile"')
-  
+if args.clusterFile is not None:
+    cluster = pd.read_csv(path + args.clusterFile)
+    cluster.rename(columns={'cluster_id': 'x'}, inplace=True)
+    # merge metadata with cluster annotations
+    metadata = metadata.merge(cluster, on='x', how='left')
 
-# merge obs with annot
-## note: annot variable must exist
-try:
-    obs = obs.merge(annot, on='x', how='left')
-    obs.rename(columns={'Unnamed: 0' :'cluster_id'}, inplace=True)
-    obs.set_index('cluster_id', inplace=True)
-except:
-    print('Rename joining column between observations and annotations to a common notation')
+# tSNE
+if args.tsneFile is not None:
+    tsne = pd.read_csv(path + args.tsneFile)
+    if 'Unnamed: 0' in tsne.columns:
+        tsne.rename(columns={'Unnamed: 0': 'sample_name'}, inplace=True)
+    print(tsne.columns)
+    metadata = tsne.merge(metadata, on='sample_name', how='left')
+    # merge metadata with tsne
+    tsne.set_index('sample_name', inplace=True)
 
+# features
+if args.trimmedMeansFile is not None:
+    features = pd.read_csv(path + args.trimmedMeansFile)
 
-# counts matrix
+if 'sample_name' in metadata.columns:
+    metadata.set_index('sample_name', inplace=True)
+metadata.dropna(axis=1, inplace=True)
+
+# exon counts matrix
+if args.exonCountsFile is not None:
+    exonCounts = pd.read_csv(path + args.exonCountsFile, index_col=0).T
+    exonCounts = exonCounts[exonCounts.index.isin(metadata.index)]
+    if 'features' in globals():
+        adata = ad.AnnData(X=exonCounts, obs=metadata, var=features)
+    else:
+        adata = ad.AnnData(X=exonCounts, obs=metadata)
+    if 'tsne' in globals():
+        adata.obsm['X_tsne'] = np.array(tsne)
+    output_name = path + '/exonInput.h5ad'
+    print(f"Generating {output_name} ...")
+    if os.path.exists(output_name):
+        os.remove(output_name)
+    adata.write(filename=output_name, compression="gzip")
+    print(f"Completed generating {output_name}!")
+
+# intron counts matrix
+if args.intronCountsFile is not None:
+    intronCounts = pd.read_csv(path + args.intronCountsFile, index_col=0).T
+    intronCounts = intronCounts[intronCounts.index.isin(metadata.index)]
+    if 'features' in globals():
+        adata = ad.AnnData(X=intronCounts, obs=metadata, var=features)
+    else:
+        adata = ad.AnnData(X=intronCounts, obs=metadata)
+    if 'tsne' in globals():
+        adata.obsm['X_tsne'] = np.array(tsne)
+    output_name = path + '/intronInput.h5ad'
+    print(f"Generating {output_name} ...")
+    if os.path.exists(output_name):
+        os.remove(output_name)
+    adata.write(filename=output_name, compression="gzip")
+    print(f"Completed generating {output_name}!")
+
+# common counts matrix
 if args.countsFile is not None:
-  try:
-      print('read ', path + args.countsFile)
-      counts = pd.read_csv(path + args.countsFile, index_col=0).T
-  except:
-      print('Check if a right column name was set as index in counts file')
-else:
-  counts = None
-  print('Note: There is no counts file specified with "countsFile"')
+    counts = pd.read_csv(path + args.countsFile, index_col=0).T
+    counts = counts[counts.index.isin(metadata.index)]
+    if 'features' in globals():
+        adata = ad.AnnData(X=counts, obs=metadata, var=features)
+    else:
+        adata = ad.AnnData(X=counts, obs=metadata)
+    if 'tsne' in globals():
+        adata.obsm['X_tsne'] = np.array(tsne)
+    output_name = path + '/Input.h5ad'
+    print(f"Generating {output_name} ...")
+    if os.path.exists(output_name):
+        os.remove(output_name)
+    adata.write(filename=output_name, compression="gzip")
+    print(f"Completed generating {output_name}!")
 
-# create anndata file
-if counts is not None:
-    adata = anndata.AnnData(counts, obs)
-else:
-    adata = anndata.AnnData(obs)
 
-print('Creating anndata file ...')
-adata.write(path + '/Input.h5ad')
-print('Successfully created anndata file. Done.')
+
